@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
@@ -10,15 +10,31 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "react-datetime/css/react-datetime.css";
 
 import HomePage from "./pages/HomePage";
+import SignIn from "./pages/Signin";
 import ScrollToTop from "./components/ScrollToTop";
 import { GlobalProvider } from "./contexts/globalContext";
+import { UserContext } from "./contexts/userContext";
+
+export default function App() {
+  const { user } = useContext(UserContext);
+
+  return (
+    <BrowserRouter>
+      {user ? (
+        <>
+          <ScrollToTop />
+          <HomePage />
+        </>
+      ) : (
+        <SignIn />
+      )}
+    </BrowserRouter>
+  );
+}
 
 ReactDOM.render(
   <GlobalProvider>
-    <BrowserRouter>
-      <ScrollToTop />
-      <HomePage />
-    </BrowserRouter>
+    <App />
   </GlobalProvider>,
   document.getElementById("root")
 );

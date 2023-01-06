@@ -12,12 +12,6 @@ import { Routes } from "../routes";
 import BgImage from "../assets/img/illustrations/signin.svg";
 import { UserContext } from "../contexts/userContext";
 
-function redirect_logged_in() {
-  if (localStorage.getItem("user")) {
-    window.location.href = "/";
-  }
-}
-
 function App() {
   const [state, setState] = useState({ username: "", password: "" });
   const { login, error, loading } = useContext(UserContext);
@@ -44,7 +38,6 @@ function App() {
 
   return (
     <div className="App">
-      {redirect_logged_in()}
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
           <p className="text-center">

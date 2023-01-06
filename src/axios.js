@@ -12,12 +12,16 @@ const instance = axios.create({
   headers: {
     "Content-Type": "application/json",
     accept: "application/json",
-    token: localStorage.getItem("access"),
   },
 });
 
 instance.interceptors.request.use(
   async (request) => {
+    const access = localStorage.getItem("access");
+
+    if (access) {
+      request.headers.token = access;
+    }
     return request;
   },
   async function (error) {

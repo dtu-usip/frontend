@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import instance from "../axios";
 export const UserContext = createContext();
 
@@ -6,6 +6,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const localUser = localStorage.getItem("user");
 
   const login = async (username, password) => {
     try {
@@ -78,6 +79,12 @@ export const UserProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (localUser) {
+      setUser(JSON.parse(localUser));
+    }
+  }, [localUser]);
 
   return (
     <UserContext.Provider
