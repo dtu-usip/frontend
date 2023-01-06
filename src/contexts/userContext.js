@@ -14,13 +14,13 @@ export const UserProvider = ({ children }) => {
         username,
         password,
       });
-      localStorage.setItem("access", response.data?.access);
-      localStorage.setItem("refresh", response.data?.refresh);
-      localStorage.setItem("user", JSON.stringify(response.data?.user));
-      setUser(response.data?.user);
+      localStorage.setItem("access", response?.data?.access);
+      localStorage.setItem("refresh", response?.data?.refresh);
+      localStorage.setItem("user", JSON.stringify(response?.data?.user));
       setLoading(false);
     } catch (e) {
-      setError(e.response?.data?.err?.message ?? e.response.data ?? e);
+      setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
+      setLoading(false);
     }
   };
 
@@ -33,7 +33,8 @@ export const UserProvider = ({ children }) => {
       });
       setLoading(false);
     } catch (e) {
-      setError(e.response?.data?.err?.message ?? e.response.data ?? e);
+      setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
+      setLoading(false);
     }
   };
 
@@ -46,7 +47,8 @@ export const UserProvider = ({ children }) => {
       });
       setLoading(false);
     } catch (e) {
-      setError(e.response?.data?.err?.message ?? e.response.data ?? e);
+      setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
+      setLoading(false);
     }
   };
 
@@ -57,7 +59,8 @@ export const UserProvider = ({ children }) => {
       localStorage.setItem("access", response.data?.access);
       setLoading(false);
     } catch (e) {
-      setError(e.response?.data?.err?.message ?? e.response.data ?? e);
+      setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
+      setLoading(false);
     }
   };
 
@@ -71,7 +74,8 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       setLoading(false);
     } catch (e) {
-      setError(e.response?.data?.err?.message ?? e.response.data ?? e);
+      setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
+      setLoading(false);
     }
   };
 

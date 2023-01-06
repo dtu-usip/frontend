@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 // core styles
 import "./assets/styles/styles.scss";
@@ -15,10 +15,10 @@ import { GlobalProvider } from "./contexts/globalContext";
 
 ReactDOM.render(
   <GlobalProvider>
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <HomePage />
-    </HashRouter>
+    </BrowserRouter>
   </GlobalProvider>,
   document.getElementById("root")
 );
