@@ -1,28 +1,56 @@
 import { Table } from "@themesberg/react-bootstrap";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@themesberg/react-bootstrap";
 import { GradeContext } from "../contexts/gradeContext";
+import { StudentContext } from "../contexts/studentContext";
+import { useHistory, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-function StudentsTable({ students }) {
+function StudentsTable() {
+  const { id } = useParams();
+  const { goBack } = useHistory();
+  const { students, course, getStudentsInCourse, loading, clearState } =
+    useContext(StudentContext);
+
+  useEffect(() => {
+    if (id) {
+      getStudentsInCourse(id);
+    }
+
+    return () => {
+      clearState();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
   return (
-    <Table striped bordered>
-      <thead>
-        <tr>
-          <th>S.no</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>MTE score</th>
-          <th>ETE score</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {students?.map((e, index) => (
-          <Element e={e} index={index} key={index} />
-        ))}
-        <tr></tr>
-      </tbody>
-    </Table>
+    <>
+      <h2>
+        <FontAwesomeIcon icon={faArrowLeft} onClick={goBack} /> Students in{" "}
+        {course?.course}
+      </h2>
+      <Table striped bordered>
+        <thead>
+          <tr>
+            <th>S.no</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>MTE score</th>
+            <th>ETE score</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        {loading && <>Loading...</>}
+        {students.length < 1 && <>No students in this course yet</>}
+        <tbody>
+          {students?.map((e, index) => (
+            <Element e={e} index={index} key={index} />
+          ))}
+          <tr></tr>
+        </tbody>
+      </Table>
+    </>
   );
 }
 

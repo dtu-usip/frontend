@@ -16,6 +16,7 @@ import ServerError from "./ServerError";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Preloader from "../components/Preloader";
+import StudentsTable from "../components/StudentsTable";
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -76,6 +77,7 @@ let Props = () => (
       path={Routes.NotFound.path}
       component={NotFoundPage}
     />
+    <RouteWithSidebar path={`/edit-grades/:id`} component={StudentsTable} />
     <RouteWithLoader
       exact
       path={Routes.ServerError.path}

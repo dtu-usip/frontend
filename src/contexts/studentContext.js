@@ -3,7 +3,8 @@ import instance from "../axios";
 export const StudentContext = createContext();
 
 export const StudentProvider = ({ children }) => {
-  const [students, setStudents] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [course, setCourse] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +26,7 @@ export const StudentProvider = ({ children }) => {
         `/student/course?courseId=${course_id}`
       );
       setStudents(response.data?.students);
+      setCourse(response.data?.course);
       setLoading(false);
     } catch (e) {
       setError(e.response?.data?.err?.message ?? e.response.data ?? e);
@@ -35,6 +37,7 @@ export const StudentProvider = ({ children }) => {
     setError(null);
     setLoading(false);
     setStudents([]);
+    setCourse(null);
   };
 
   return (
@@ -44,6 +47,7 @@ export const StudentProvider = ({ children }) => {
         getStudentsInCourse,
         clearState,
         students,
+        course,
         error,
         loading,
       }}
