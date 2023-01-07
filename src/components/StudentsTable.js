@@ -42,7 +42,7 @@ function StudentsTable() {
           </tr>
         </thead>
         {loading && <>Loading...</>}
-        {students.length < 1 && <>No students in this course yet</>}
+        {!loading && students.length < 1 && <>No students in this course yet</>}
         <tbody>
           {students?.map((e, index) => (
             <Element e={e} index={index} key={index} />

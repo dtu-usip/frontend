@@ -7,7 +7,8 @@ import { useHistory } from "react-router-dom";
 
 function CoursesTable() {
   const { user } = useContext(UserContext);
-  const { courses, getCourses, clearState } = useContext(TeacherContext);
+  const { courses, getCourses, clearState, loading } =
+    useContext(TeacherContext);
 
   useEffect(() => {
     if (user) {
@@ -30,6 +31,8 @@ function CoursesTable() {
         </tr>
       </thead>
       <tbody>
+        {loading && <>Loading...</>}
+        {!loading && courses?.length < 1 && <>No Courses yet</>}
         {courses?.map((e, index) => (
           <Element e={e} index={index} key={index} />
         ))}
