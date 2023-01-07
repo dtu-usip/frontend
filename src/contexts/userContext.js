@@ -32,10 +32,15 @@ export const UserProvider = ({ children }) => {
         password,
         newPassword,
       });
+      alert("Password Updated!");
       setLoading(false);
     } catch (e) {
       setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
       setLoading(false);
+      alert(
+        "There was an error: " +
+          (e.response?.data?.err?.message ?? e?.response?.data ?? e).toString()
+      );
     }
   };
 
@@ -46,10 +51,15 @@ export const UserProvider = ({ children }) => {
         email,
         phone,
       });
+      alert("Info Updated!");
       setLoading(false);
     } catch (e) {
       setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
       setLoading(false);
+      alert(
+        "There was an error: " +
+          (e.response?.data?.err?.message ?? e?.response?.data ?? e).toString()
+      );
     }
   };
 
