@@ -7,6 +7,7 @@ import { ViewGradesTable } from "../components/Tables";
 import { POST } from "../utilities/Requests";
 import { TeacherContext } from "../contexts/teacherContext";
 import { UserContext } from "../contexts/userContext";
+import { StudentContext } from "../contexts/studentContext";
 
 let status = getCookie("status");
 let allStudentList = [];
@@ -39,7 +40,7 @@ function filterTable(courseNumber, option) {
   }
 }
 
-const FilterStudentList = async () => {
+const FilterStudentList = async (course) => {
   try {
     let courseStudents = await POST(
       { course: lastCourseNumber },
@@ -104,21 +105,16 @@ function viewCourseGrades(student) {
 }
 
 function viewCourseStudents(course) {
-  alert(course.toString());
-  let courseListRow = document.getElementById("courseList");
-  let backButton = document.getElementById("backButton");
-  let studentList = document.getElementById("studentList");
-
-  FilterStudentList();
-  setTimeout(function () {
-    courseListRow.style.display = "none";
-    backButton.style.display = "block";
-    studentList.style.display = "block";
-  }, 200);
+  FilterStudentList(course);
+  //   setTimeout(function () {
+  //     courseListRow.style.display = "none";
+  //     backButton.style.display = "block";
+  //     studentList.style.display = "block";
+  //   }, 200);
 }
 
-function studentListContent(token) {
-  if (token === []) {
+function studentListContent(students) {
+  if (students.length < 1) {
     return (
       <>
         <h5>This course has no students!</h5>
@@ -127,20 +123,45 @@ function studentListContent(token) {
   }
 
   let res;
-  for (const student in token) {
+  for (const index in students) {
     res = (
       <>
         {res}
-        <Col xs={12} sm={6} xl={2} className="mb-4" id={token[student]}>
+        <Col
+          xs={12}
+          sm={6}
+          xl={2}
+          className="mb-4"
+          id={students[index]?.user._id}
+        >
           <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
             <Button
               variant="secondary"
               size="xs"
               className="text-dark"
               style={{ color: "white" }}
-              onClick={viewCourseGrades.bind(this, token[student])}
+              onClick={() => {}}
             >
-              <h5>{token[student]}</h5>
+              <h5>{students[index]?.user?.full_name}</h5>
+            </Button>
+          </div>
+        </Col>
+        <Col
+          xs={12}
+          sm={6}
+          xl={2}
+          className="mb-4"
+          id={students[index]?.user._id}
+        >
+          <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
+            <Button
+              variant="secondary"
+              size="xs"
+              className="text-dark"
+              style={{ color: "white" }}
+              onClick={() => {}}
+            >
+              <h5>{students[index]?.mte_score ?? 0}</h5>
             </Button>
           </div>
         </Col>
@@ -160,25 +181,11 @@ async function getStudentList() {
   }
 }
 
-const ViewStudents = () => {
-  const [token, setToken] = useState([]);
-  useEffect(() => {
-    async function getToken() {
-      const token = await getStudentList();
-      setToken(token);
-    }
-    getToken();
-  }, []);
-
-  if (token !== undefined) {
-    allStudentList.push(...token);
-    allStudentList = [...new Set(allStudentList)];
-  }
-
-  return <>{studentListContent(token)}</>;
+const ViewStudents = (students) => {
+  return <>{studentListContent(students)}</>;
 };
 
-function viewCourses(courses) {
+function viewCourses(courses, getStudentsInCourse) {
   if (!courses || courses?.length < 1) {
     return (
       <>
@@ -186,6 +193,10 @@ function viewCourses(courses) {
       </>
     );
   }
+
+  const getStudents = (course_id) => {
+    getStudentsInCourse(course_id);
+  };
 
   let res;
   for (const index in courses) {
@@ -199,7 +210,7 @@ function viewCourses(courses) {
               size="xs"
               className="text-dark"
               style={{ color: "white" }}
-              onClick={viewCourseStudents.bind(this, courses[index]?.course)}
+              onClick={() => getStudents(courses[index]?.course?._id)}
             >
               <h5>Course #{courses[index]?.course?.course}</h5>
             </Button>
@@ -273,7 +284,7 @@ function maxLengthCheck() {
   if (object.value < 0) object.value = 0;
 }
 
-function content(courses) {
+function content(courses, getStudentsInCourse, showStudents, students) {
   if (status === statuses[2]) {
     return (
       <>
@@ -383,15 +394,20 @@ function content(courses) {
           </div>
         </div>
         {/* Assigned Course List */}
-        <div id="courseList">
-          <Row className="justify-content-md-center">
-            {viewCourses(courses)}
-          </Row>
-        </div>
+        {!showStudents ? (
+          <div id="courseList">
+            <Row className="justify-content-md-center">
+              {viewCourses(courses, getStudentsInCourse)}
+            </Row>
+          </div>
+        ) : (
+          <div id="studentList">
+            <Row className="justify-content-md-center">
+              {ViewStudents(students)}
+            </Row>
+          </div>
+        )}
         {/* Assigned Students by Course */}
-        <div id="studentList" style={{ display: "none" }}>
-          <Row className="justify-content-md-center">{ViewStudents()}</Row>
-        </div>
         <div id="courseGrades" style={{ display: "none" }}>
           {ViewGradesTable(lastStudent, "edit-grades")}
         </div>
@@ -403,8 +419,16 @@ function content(courses) {
 }
 
 let Props = () => {
+  const [showStudents, setShowStudents] = useState(false);
   const { user } = useContext(UserContext);
   const { courses, getCourses, clearState } = useContext(TeacherContext);
+  const { getStudentsInCourse, students } = useContext(StudentContext);
+
+  useEffect(() => {
+    if (students?.length > 1) {
+      setShowStudents(true);
+    }
+  }, [students]);
 
   useEffect(() => {
     if (user) {
@@ -421,7 +445,7 @@ let Props = () => {
     <>
       <center>
         <div className="flex-wrap flex-md-nowrap align-items-center py-4">
-          {content(courses)}
+          {content(courses, getStudentsInCourse, showStudents, students)}
         </div>
       </center>
     </>

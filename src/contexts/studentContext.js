@@ -21,7 +21,9 @@ export const StudentProvider = ({ children }) => {
   const getStudentsInCourse = async (course_id) => {
     try {
       setLoading(true);
-      const response = await instance.get(`/student?course_id=${course_id}`);
+      const response = await instance.get(
+        `/student/course?courseId=${course_id}`
+      );
       setStudents(response.data?.students);
       setLoading(false);
     } catch (e) {
