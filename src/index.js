@@ -7,7 +7,6 @@ import "./assets/styles/styles.scss";
 
 // vendor styles
 import "@fortawesome/fontawesome-free/css/all.css";
-import "react-datetime/css/react-datetime.css";
 
 import HomePage from "./pages/HomePage";
 import SignIn from "./pages/Signin";

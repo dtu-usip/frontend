@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.31eae207.chunk.css",
+    "main.js": "/static/js/main.d8cb109c.chunk.js",
+    "main.js.map": "/static/js/main.d8cb109c.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.7f75f45e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.7f75f45e.js.map",
+    "static/css/2.497dc8f3.chunk.css": "/static/css/2.497dc8f3.chunk.css",
+    "static/js/2.fd502273.chunk.js": "/static/js/2.fd502273.chunk.js",
+    "static/js/2.fd502273.chunk.js.map": "/static/js/2.fd502273.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.497dc8f3.chunk.css.map": "/static/css/2.497dc8f3.chunk.css.map",
+    "static/css/main.31eae207.chunk.css.map": "/static/css/main.31eae207.chunk.css.map",
+    "static/js/2.fd502273.chunk.js.LICENSE.txt": "/static/js/2.fd502273.chunk.js.LICENSE.txt",
+    "static/media/404.59d1f9fd.svg": "/static/media/404.59d1f9fd.svg",
+    "static/media/Student.d6a1d5d8.png": "/static/media/Student.d6a1d5d8.png",
+    "static/media/dtuLogo.39e03a8b.jpg": "/static/media/dtuLogo.39e03a8b.jpg",
+    "static/media/all.css": "/static/media/fa-solid-900.eeccf4f6.woff",
+    "static/media/react-logo-transparent.c39e9569.svg": "/static/media/react-logo-transparent.c39e9569.svg",
+    "static/media/signin.454f944b.svg": "/static/media/signin.454f944b.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7f75f45e.js",
+    "static/css/2.497dc8f3.chunk.css",
+    "static/js/2.fd502273.chunk.js",
+    "static/css/main.31eae207.chunk.css",
+    "static/js/main.d8cb109c.chunk.js"
+  ]
+}
