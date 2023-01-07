@@ -27,7 +27,6 @@ export const GradeProvider = ({ children }) => {
         mte_score,
         ete_score,
       });
-      viewGrades();
       setLoading(false);
     } catch (e) {
       setError(e.response?.data?.err?.message ?? e.response.data ?? e);

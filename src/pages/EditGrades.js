@@ -8,6 +8,7 @@ import { POST } from "../utilities/Requests";
 import { TeacherContext } from "../contexts/teacherContext";
 import { UserContext } from "../contexts/userContext";
 import { StudentContext } from "../contexts/studentContext";
+import StudentsTable from "../components/StudentsTable";
 
 let status = getCookie("status");
 let allStudentList = [];
@@ -114,7 +115,7 @@ function viewCourseStudents(course) {
 }
 
 function studentListContent(students) {
-  if (students.length < 1) {
+  if (students?.length < 1) {
     return (
       <>
         <h5>This course has no students!</h5>
@@ -122,53 +123,85 @@ function studentListContent(students) {
     );
   }
 
-  let res;
-  for (const index in students) {
-    res = (
-      <>
-        {res}
-        <Col
-          xs={12}
-          sm={6}
-          xl={2}
-          className="mb-4"
-          id={students[index]?.user._id}
-        >
-          <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
-            <Button
-              variant="secondary"
-              size="xs"
-              className="text-dark"
-              style={{ color: "white" }}
-              onClick={() => {}}
-            >
-              <h5>{students[index]?.user?.full_name}</h5>
-            </Button>
-          </div>
+  let res = (
+    <>
+      <Row>
+        <Col xs={12} sm={6} xl={2} className="mb-4">
+          Full Name
         </Col>
-        <Col
-          xs={12}
-          sm={6}
-          xl={2}
-          className="mb-4"
-          id={students[index]?.user._id}
-        >
-          <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
-            <Button
-              variant="secondary"
-              size="xs"
-              className="text-dark"
-              style={{ color: "white" }}
-              onClick={() => {}}
-            >
-              <h5>{students[index]?.mte_score ?? 0}</h5>
-            </Button>
-          </div>
+        <Col xs={12} sm={6} xl={2} className="mb-4">
+          MTE Score
         </Col>
-      </>
-    );
-  }
-  return res;
+        <Col xs={12} sm={6} xl={2} className="mb-4">
+          ETE Score
+        </Col>
+      </Row>
+    </>
+  );
+
+  //   for (const index in students) {
+  //     res = (
+  //       <>
+  //         {res}
+  //         <Row>
+  //           <Col
+  //             xs={12}
+  //             sm={6}
+  //             xl={2}
+  //             className="mb-4"
+  //             id={students[index]?.user._id}
+  //           >
+  //             <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
+  //               <h5>{students[index]?.user?.full_name}</h5>
+  //             </div>
+  //           </Col>
+  //           <Col
+  //             xs={12}
+  //             sm={6}
+  //             xl={2}
+  //             className="mb-4"
+  //             id={students[index]?.user._id}
+  //           >
+  //             <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
+  //               <h5>{students[index]?.mte_score ?? 0}</h5>
+  //             </div>
+  //           </Col>
+  //           <Col
+  //             xs={12}
+  //             sm={6}
+  //             xl={2}
+  //             className="mb-4"
+  //             id={students[index]?.user._id}
+  //           >
+  //             <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
+  //               <h5>{students[index]?.ete_score ?? 0}</h5>
+  //             </div>
+  //           </Col>
+  //           <Col
+  //             xs={12}
+  //             sm={6}
+  //             xl={2}
+  //             className="mb-4"
+  //             id={students[index]?.user._id}
+  //           >
+  //             <div className="shadow-soft rounded border-light p-2 w-75 fmxw-500">
+  //               <Button
+  //                 variant="secondary"
+  //                 size="xs"
+  //                 className="text-dark"
+  //                 style={{ color: "white" }}
+  //                 onClick={() => {}}
+  //               >
+  //                 <h5>Save</h5>
+  //               </Button>
+  //             </div>
+  //           </Col>
+  //         </Row>
+  //       </>
+  //     );
+  //   }
+  //   return res;
+  return <StudentsTable students={students} />;
 }
 
 async function getStudentList() {
@@ -185,7 +218,7 @@ const ViewStudents = (students) => {
   return <>{studentListContent(students)}</>;
 };
 
-function viewCourses(courses, getStudentsInCourse) {
+function viewCourses(courses, getStudentsInCourse, setShowStudents) {
   if (!courses || courses?.length < 1) {
     return (
       <>
@@ -196,6 +229,7 @@ function viewCourses(courses, getStudentsInCourse) {
 
   const getStudents = (course_id) => {
     getStudentsInCourse(course_id);
+    setShowStudents(true);
   };
 
   let res;
@@ -212,7 +246,7 @@ function viewCourses(courses, getStudentsInCourse) {
               style={{ color: "white" }}
               onClick={() => getStudents(courses[index]?.course?._id)}
             >
-              <h5>Course #{courses[index]?.course?.course}</h5>
+              <h5>Course - {courses[index]?.course?.course}</h5>
             </Button>
           </div>
         </Col>
@@ -284,7 +318,13 @@ function maxLengthCheck() {
   if (object.value < 0) object.value = 0;
 }
 
-function content(courses, getStudentsInCourse, showStudents, students) {
+function content(
+  courses,
+  getStudentsInCourse,
+  showStudents,
+  students,
+  setShowStudents
+) {
   if (status === statuses[2]) {
     return (
       <>
@@ -397,7 +437,7 @@ function content(courses, getStudentsInCourse, showStudents, students) {
         {!showStudents ? (
           <div id="courseList">
             <Row className="justify-content-md-center">
-              {viewCourses(courses, getStudentsInCourse)}
+              {viewCourses(courses, getStudentsInCourse, setShowStudents)}
             </Row>
           </div>
         ) : (
@@ -425,12 +465,6 @@ let Props = () => {
   const { getStudentsInCourse, students } = useContext(StudentContext);
 
   useEffect(() => {
-    if (students?.length > 1) {
-      setShowStudents(true);
-    }
-  }, [students]);
-
-  useEffect(() => {
     if (user) {
       getCourses();
     }
@@ -445,7 +479,13 @@ let Props = () => {
     <>
       <center>
         <div className="flex-wrap flex-md-nowrap align-items-center py-4">
-          {content(courses, getStudentsInCourse, showStudents, students)}
+          {content(
+            courses,
+            getStudentsInCourse,
+            showStudents,
+            students,
+            setShowStudents
+          )}
         </div>
       </center>
     </>
