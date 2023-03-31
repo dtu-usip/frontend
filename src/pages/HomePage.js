@@ -18,6 +18,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Preloader from "../components/Preloader";
 import StudentsTable from "../components/StudentsTable";
+import GradingSidebar from "../components/GradingSidebar";
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -40,7 +41,7 @@ const RouteWithLoader = ({ component: Component, ...rest }) => {
   );
 };
 
-const RouteWithSidebar = ({ component: Component, ...rest }) => {
+const RouteWithSidebar = ({ component: Component, CustomSidebar, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
       render={(props) => (
         <>
           <Preloader show={loaded ? false : true} />
-          <Sidebar />
+          {CustomSidebar ? <CustomSidebar /> : <Sidebar />}
           <main className="content">
             <Navbar />
             <Component {...props} />
@@ -71,6 +72,7 @@ let Props = () => (
       exact
       path={Routes.GradingDashboard.path}
       component={GradingDashboard}
+      CustomSidebar={GradingSidebar}
     />
     <RouteWithSidebar exact path={Routes.Overview.path} component={Overview} />
     <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
