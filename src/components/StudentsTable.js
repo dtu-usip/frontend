@@ -9,9 +9,12 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 function StudentsTable() {
   const { id } = useParams();
+  const { addGrades } = useContext(GradeContext);
   const { goBack } = useHistory();
   const { students, course, getStudentsInCourse, loading, clearState } =
     useContext(StudentContext);
+
+  const [form, setForm] = useState({});
 
   useEffect(() => {
     if (id) {
@@ -23,6 +26,21 @@ function StudentsTable() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const handleFormChange = (studentId, formData) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [studentId]: { ...prevForm[studentId], formData },
+    }));
+  };
+
+  const handleSaveAll = () => {
+    students.forEach((student) => {
+      if (form[student.user._id]) {
+        addGrades(id, student.user._id, form.mte_score, form.ete_score);
+      }
+    });
+  };
 
   return (
     <>
@@ -45,9 +63,20 @@ function StudentsTable() {
         {!loading && students.length < 1 && <>No students in this course yet</>}
         <tbody>
           {students?.map((e, index) => (
-            <Element e={e} index={index} key={index} />
+            <Element
+              e={e}
+              index={index}
+              key={index}
+              handleFormChange={handleFormChange}
+            />
           ))}
           <tr></tr>
+          <tr>
+            <td colSpan={5}>All Marks</td>
+            <td>
+              <Button onClick={handleSaveAll}>Save All</Button>
+            </td>
+          </tr>
         </tbody>
       </Table>
     </>
@@ -56,7 +85,7 @@ function StudentsTable() {
 
 export default StudentsTable;
 
-function Element({ e, index }) {
+function Element({ e, index, handleFormChange }) {
   const { addGrades } = useContext(GradeContext);
   const [form, setForm] = useState({
     mte_score: e?.mte_score ?? 0,
@@ -68,6 +97,12 @@ function Element({ e, index }) {
       addGrades(e.course, e.user._id, form.mte_score, form.ete_score);
     }
   };
+
+  useEffect(() => {
+    if (form && e.user) {
+      handleFormChange(e.user._id, form);
+    }
+  }, [form]);
 
   return (
     <tr>
