@@ -4,6 +4,7 @@ import { Routes } from "../routes";
 
 // pages
 import GradingDashboard from "./GradingDashboard";
+import Overview from "./Overview";
 import Settings from "./Settings";
 
 import ViewGrades from "./ViewGrades";
@@ -71,6 +72,7 @@ let Props = () => (
       path={Routes.GradingDashboard.path}
       component={GradingDashboard}
     />
+    <RouteWithSidebar exact path={Routes.Overview.path} component={Overview} />
     <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
     <RouteWithLoader
       exact

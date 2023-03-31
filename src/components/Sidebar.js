@@ -234,13 +234,13 @@ let Props = () => {
             <Nav className="flex-column pt-3 pt-md-0">
               <NavItem
                 title="Grading Dashboard"
-                link="/#"
+                link={Routes.GradingDashboard.path}
                 image={GradingSystemIcon}
               />
 
               <NavItem
                 title="Overview"
-                link={Routes.GradingDashboard.path}
+                link={Routes.Overview.path}
                 icon={faChartPie}
               />
               {userUI()}
