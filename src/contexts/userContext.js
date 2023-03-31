@@ -79,15 +79,14 @@ export const UserProvider = ({ children }) => {
     try {
       setLoading(true);
       await instance.get(`/auth`);
-      localStorage.clear("access");
-      localStorage.clear("refresh");
-      localStorage.clear("user");
-      setUser(null);
-      setLoading(false);
     } catch (e) {
       setError(e.response?.data?.err?.message ?? e?.response?.data ?? e);
-      setLoading(false);
     }
+    localStorage.clear("access");
+    localStorage.clear("refresh");
+    localStorage.clear("user");
+    setUser(null);
+    setLoading(false);
   };
 
   useEffect(() => {
