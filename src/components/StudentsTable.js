@@ -54,6 +54,8 @@ function StudentsTable() {
             <th>S.no</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>CWS Score</th>
+            <th>PRS Score</th>
             <th>MTE score</th>
             <th>ETE score</th>
             <th>Actions</th>
@@ -72,7 +74,7 @@ function StudentsTable() {
           ))}
           <tr></tr>
           <tr>
-            <td colSpan={5}>All Marks</td>
+            <td colSpan={7}>All Marks</td>
             <td>
               <Button onClick={handleSaveAll}>Save All</Button>
             </td>
@@ -88,6 +90,8 @@ export default StudentsTable;
 function Element({ e, index, handleFormChange }) {
   const { addGrades } = useContext(GradeContext);
   const [form, setForm] = useState({
+    cws_score: e?.cws_score ?? 0,
+    prs_score: e?.prs_score ?? 0,
     mte_score: e?.mte_score ?? 0,
     ete_score: e?.ete_score ?? 0,
   });
@@ -109,6 +113,20 @@ function Element({ e, index, handleFormChange }) {
       <td>{index + 1}</td>
       <td>{e?.user?.first_name}</td>
       <td>{e?.user?.last_name}</td>
+      <td>
+        <input
+          type="text"
+          value={form.cws_score ?? "0"}
+          onChange={(e) => setForm({ ...form, cws_score: e.target.value })}
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          value={form.prs_score ?? "0"}
+          onChange={(e) => setForm({ ...form, prs_score: e.target.value })}
+        />
+      </td>
       <td>
         <input
           type="text"
