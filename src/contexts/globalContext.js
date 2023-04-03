@@ -1,5 +1,6 @@
 import React, { createContext } from "react";
 import { GradeProvider } from "./gradeContext";
+import { GradeDashboardProvider } from "./gradingDashboardContext";
 import { StudentProvider } from "./studentContext";
 import { TeacherProvider } from "./teacherContext";
 import { UserProvider } from "./userContext";
@@ -11,7 +12,9 @@ export const GlobalProvider = ({ children }) => {
       <UserProvider>
         <StudentProvider>
           <TeacherProvider>
-            <GradeProvider>{children}</GradeProvider>
+            <GradeDashboardProvider>
+              <GradeProvider>{children}</GradeProvider>
+            </GradeDashboardProvider>
           </TeacherProvider>
         </StudentProvider>
       </UserProvider>

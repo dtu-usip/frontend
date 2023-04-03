@@ -1,17 +1,15 @@
 import React from "react";
-import BarChart from "../components/BarChart";
-import GradesTable from "../components/GradesTable";
+import CoursesTable from "../components/CoursesTable";
 import "../styles/gradingDashboard.css";
 
 const GradingDashboard = () => {
   return (
-    <div>
-      <div className="chart">
-        <BarChart />
+    <center>
+      <h2>Your courses</h2>
+      <div className="flex-wrap flex-md-nowrap align-items-center py-4">
+        <CoursesTable isGrading={true} />
       </div>
-      <h2>Grade Report</h2>
-      <GradesTable />
-    </div>
+    </center>
   );
 };
 

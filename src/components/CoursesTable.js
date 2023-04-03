@@ -5,7 +5,7 @@ import { TeacherContext } from "../contexts/teacherContext";
 import { UserContext } from "../contexts/userContext";
 import { useHistory } from "react-router-dom";
 
-function CoursesTable() {
+function CoursesTable({ isGrading }) {
   const { user } = useContext(UserContext);
   const { courses, getCourses, clearState, loading } =
     useContext(TeacherContext);
@@ -34,7 +34,7 @@ function CoursesTable() {
         {loading && <>Loading...</>}
         {!loading && courses?.length < 1 && <>No Courses yet</>}
         {courses?.map((e, index) => (
-          <Element e={e} index={index} key={index} />
+          <Element e={e} index={index} key={index} isGrading={isGrading} />
         ))}
         <tr></tr>
       </tbody>
@@ -44,10 +44,14 @@ function CoursesTable() {
 
 export default CoursesTable;
 
-function Element({ e, index }) {
+function Element({ e, index, isGrading }) {
   const history = useHistory();
   const showStudents = (id) => {
-    history.push(`/edit-grades/${id}`);
+    if (isGrading) {
+      history.push(`/grading-dashboard/${id}`);
+    } else {
+      history.push(`/edit-grades/${id}`);
+    }
   };
 
   return (
@@ -56,7 +60,7 @@ function Element({ e, index }) {
       <td>{e?.course?.course}</td>
       <td>
         <Button onClick={() => showStudents(e.course?._id)}>
-          Show Students
+          {isGrading ? "Edit Grades" : "Show Students"}
         </Button>
       </td>
     </tr>

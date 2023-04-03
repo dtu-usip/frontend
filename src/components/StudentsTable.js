@@ -106,6 +106,7 @@ function Element({ e, index, handleFormChange }) {
     if (form && e.user) {
       handleFormChange(e.user._id, form);
     }
+    // eslint-disable-next-line
   }, [form]);
 
   return (
