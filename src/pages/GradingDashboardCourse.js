@@ -7,7 +7,9 @@ import "../styles/gradingDashboard.css";
 
 const GradingDashboardCourse = () => {
   const { id } = useParams();
-  const { getGradeDashboard, clearState } = useContext(GradeDashboardContext);
+  const { getGradeDashboard, clearState, grades } = useContext(
+    GradeDashboardContext
+  );
 
   useEffect(() => {
     if (id) {
@@ -23,7 +25,7 @@ const GradingDashboardCourse = () => {
   return (
     <div>
       <div className="chart">
-        <BarChart />
+        <BarChart grades={grades} />
       </div>
       <h2>Grade Report</h2>
       <GradesTable />
